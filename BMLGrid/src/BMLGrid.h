@@ -25,7 +25,7 @@ IntegerMatrix crunBMLGrid(IntegerMatrix g, int numSteps);
 IntegerVector locateColor(const IntegerVector& g, int color);
 
 // Function to move cars of a certain color to their next location if possible
-bool moveCars(IntegerMatrix& g, IntegerVector& color, std::function<int(int,int,int)> nextLoc);
+bool moveCars(IntegerMatrix& g, IntegerVector& loc, std::function<int(int,int,int)> nextLoc, IntegerVector& buffer_loc_next, std::vector<bool>& buffer_movable);
 
 // Function to return the location (cyclicly) above the current location
 int nextLocUp(int loc, int r, int c);
