@@ -1,9 +1,14 @@
 Package: BMLGrid
 Type: Package
-Title: What the package does (short line)
-Version: 1.0
+Title: BMLGrid: package to simulate the Biham-Middleton-Levine Traffic Model.
+Version: 1.1
 Date: 2015-05-08
-Author: Who wrote it
-Maintainer: Who to complain to <yourfault@somewhere.net>
-Description: More about what it does (maybe more than one line)
-License: What license is it under?
+Author: Wenhao Wu <wnhwu@ucdavis.edu>
+Maintainer: Wenhao Wu <wnhwu@ucdavis.edu>
+Description:
+URL: http://eeyore.ucdavis.edu/stat242/Homeworks/BML_C.html
+License: GPL (>=3)
+LinkingTo: Rcpp
+Imports:
+  animation,
+  Rcpp
