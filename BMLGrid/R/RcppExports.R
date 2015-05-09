@@ -11,6 +11,7 @@
 #' g = createBMLGrid(r = 100, c = 99, ncars = c(red = 100, blue = 100))
 #' g.out = crunBMLGrid(g, 10000)
 #' plot(g.out)
+#' @export
 crunBMLGrid <- function(g, numSteps) {
     .Call('BMLGrid_crunBMLGrid', PACKAGE = 'BMLGrid', g, numSteps)
 }

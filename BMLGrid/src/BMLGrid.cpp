@@ -11,7 +11,11 @@ using namespace Rcpp;
 //' g = createBMLGrid(r = 100, c = 99, ncars = c(red = 100, blue = 100))
 //' g.out = crunBMLGrid(g, 10000)
 //' plot(g.out)
+//' @export
 // [[Rcpp::export]]
 NumericMatrix crunBMLGrid(NumericMatrix g, int numSteps) {
-   return g;
+  int r = g.nrow();
+  int c = g.ncol();
+  Rcout << r << c;
+  return g;
 }
