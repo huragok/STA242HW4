@@ -1,0 +1,17 @@
+.metadata
+tmp
+*~
+.project
+.texlipse
+.Rhistory
+.metadata/*
+*.project
+*.texlipse
+*.synctex.gz
+*.Rhistory
+Reference
+css
+images
+js
+*.html
+.Rproj.user
