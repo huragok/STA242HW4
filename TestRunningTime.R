@@ -33,7 +33,7 @@ for (i_len_edge in seq_along(len_edge)) {
   }
 }
 
-#user_time <- do.call(rbind, running_time)[, 1]
+user_time <- do.call(rbind, running_time)[, 1]
 user_time_c <- do.call(rbind, running_time_c)[, 1]
 pdf('TestRunningTime.pdf')
 plot(c(0, 0.8), c(0, 4), type = 'n',  xlab="rho", ylab="User Time (s)")

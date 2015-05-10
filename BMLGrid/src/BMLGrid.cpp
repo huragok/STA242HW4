@@ -8,13 +8,18 @@ IntegerMatrix crunBMLGrid(IntegerMatrix g, int numSteps)
 
   IntegerVector red = locateColor(g, 1);
   IntegerVector blue = locateColor(g, 2);
+  IntegerVector white = locateColor(g, 0);
   int buffer_size = ((red.size() > blue.size()) ? red.size() : blue.size());
   IntegerVector buffer_loc_next(buffer_size);
   std::vector<bool> buffer_movable(buffer_size);
   
+  if (red.size() + blue.size() + white.size() != r * c)
+  {
+    stop("Wrong grid format: values should be 0, 1, 2 only!");
+  }
   if (0 == r || 0 == c || 0 == red.size() + blue.size() || numSteps < 0)
   {
-    //Rcout << "Degenerate BMLGrid object." << std::endl;
+    Rcout << "Degenerate BMLGrid object." << std::endl;
     return(g);
   }
   

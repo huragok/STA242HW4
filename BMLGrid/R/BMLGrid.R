@@ -12,9 +12,9 @@ createBMLGrid <- function(r, c, ncars) {
   cars <- sample(1 : (r * c), ncars['red'] + ncars['blue']) # The vector index of the cars in the grid
   red <- sample(cars, ncars['red'])  # The vector index? of the red cars in the grid
   blue <- setdiff(cars, red)  # The vector index of the blue cars in the grid
-  grid <- matrix(0, nrow = r, ncol = c) # The matrix representing the cars, 0 indicates no cars on that grid
-  grid[red] <- 1 # 1 indicates a red car on the grid
-  grid[blue] <- 2 # 2 indicates a blue car on the grid
+  grid <- matrix(0L, nrow = r, ncol = c) # The matrix representing the cars, 0 indicates no cars on that grid
+  grid[red] <- 1L # 1 indicates a red car on the grid
+  grid[blue] <- 2L # 2 indicates a blue car on the grid
   
   class(grid) <- 'BMLGrid'
   return(grid)
@@ -75,9 +75,14 @@ summary.BMLGrid <- function(g, ...) {
 runBMLGrid <- function(g, numSteps, movieName = NULL, recordSpeed = FALSE) {
   r <- nrow(g)
   c <- ncol(g)
-  red <- which(g == 1) # Get the initial locations of red and blue cars
-  blue <- which(g == 2)
+  red <- which(g == 1L) # Get the initial locations of red and blue cars
+  blue <- which(g == 2L)
+  white <- which(g == 0L)
   
+  if (length(red) + length(blue) + length(white) != r * c || typeof(g) != "integer")
+  {
+    stop("Wrong grid format: values should be 0, 1, 2 only!")
+  }
   if (r == 0 || c == 0 || (length(red) + length(blue)) == 0) { # Degenerate cases, return immediatly
     warning('Degenerate BMLGrid object!')
     flush.console()
@@ -100,18 +105,18 @@ runBMLGrid <- function(g, numSteps, movieName = NULL, recordSpeed = FALSE) {
   for (step in seq_len(numSteps)) {
     if (step %% 2 == 0) { # Red cars move to right by 1 grid
       red_right <- idx_right(red, r, c) # The vector index of the right grids to current red cars
-      movable <- (g[red_right] == 0)
-      g[red[movable]] <- 0 # Update grid
-      g[red_right[movable]] <- 1
+      movable <- (g[red_right] == 0L)
+      g[red[movable]] <- 0L # Update grid
+      g[red_right[movable]] <- 1L
       red <- c(red_right[movable], red[!movable])
       if (recordSpeed) {
         nmoved[step + 1] <- get_nmoved(g, r, c, red, 'up')  # Record the number of cars moved at each step
       }
     } else { # Blue cars move upward by 1 grid
       blue_up <- idx_up(blue, r, c) # The vector index of the right grids to current red cars
-      movable <- (g[blue_up] == 0)
-      g[blue[movable]] <- 0 # Update grid
-      g[blue_up[movable]] <- 2
+      movable <- (g[blue_up] == 0L)
+      g[blue[movable]] <- 0L # Update grid
+      g[blue_up[movable]] <- 2L
       blue <- c(blue_up[movable], blue[!movable])
       if (recordSpeed) {
         nmoved[step + 1] <- get_nmoved(g, r, c, blue, 'right')  # Record the number of cars moved at each step

@@ -2,7 +2,7 @@
 % Please edit documentation in R/RcppExports.R
 \name{crunBMLGrid}
 \alias{crunBMLGrid}
-\title{Simulator for Biham-Middleton-Levine Traffic Model.}
+\title{Simulator for Biham-Middleton-Levine Traffic Model written in c++.}
 \usage{
 crunBMLGrid(g, numSteps)
 }
@@ -12,7 +12,7 @@ crunBMLGrid(g, numSteps)
 \item{numSteps}{Number of moves/periods.}
 }
 \description{
-The function that actuall runs the Biham-Middleton-Levine Traffic Model from an initial state by a given number of steps.
+The function that actually runs the Biham-Middleton-Levine Traffic Model from an initial state by a given number of steps.
 }
 \examples{
 library(BMLGrid)

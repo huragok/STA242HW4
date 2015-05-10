@@ -5,10 +5,11 @@ Version: 1.1
 Date: 2015-05-08
 Author: Wenhao Wu <wnhwu@ucdavis.edu>
 Maintainer: Wenhao Wu <wnhwu@ucdavis.edu>
-Description:
+Description: 
 URL: http://eeyore.ucdavis.edu/stat242/Homeworks/BML_C.html
 License: GPL (>=3)
 LinkingTo: Rcpp
-Imports:
+Imports: 
   animation,
   Rcpp
+Suggests: testthat
