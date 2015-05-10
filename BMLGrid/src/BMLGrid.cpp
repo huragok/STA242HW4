@@ -8,14 +8,13 @@ IntegerMatrix crunBMLGrid(IntegerMatrix g, int numSteps)
 
   IntegerVector red = locateColor(g, 1);
   IntegerVector blue = locateColor(g, 2);
-  IntegerVector buffer_loc_next_red(red.size());
-  IntegerVector buffer_loc_next_blue(blue.size());
-  std::vector<bool> buffer_movable_red(red.size());
-  std::vector<bool> buffer_movable_blue(blue.size());
+  int buffer_size = ((red.size() > blue.size()) ? red.size() : blue.size());
+  IntegerVector buffer_loc_next(buffer_size);
+  std::vector<bool> buffer_movable(buffer_size);
   
   if (0 == r || 0 == c || 0 == red.size() + blue.size() || numSteps < 0)
   {
-    Rcout << "Degenerate BMLGrid object." << std::endl;
+    //Rcout << "Degenerate BMLGrid object." << std::endl;
     return(g);
   }
   
@@ -25,11 +24,11 @@ IntegerMatrix crunBMLGrid(IntegerMatrix g, int numSteps)
   {
     if (0 == step % 2)
     {
-      movable = moveCars(g, blue, nextLocUp, buffer_loc_next_blue, buffer_movable_blue);
+      movable = moveCars(g, blue, nextLocUp, buffer_loc_next, buffer_movable);
     }
     else
     {
-      movable = moveCars(g, red, nextLocRight, buffer_loc_next_red, buffer_movable_red);
+      movable = moveCars(g, red, nextLocRight, buffer_loc_next, buffer_movable);
     }
     if (!movable_last && !movable)
     {
@@ -62,37 +61,31 @@ bool moveCars(IntegerMatrix& g, IntegerVector& loc, std::function<int(int,int,in
   // The first loop: compute the next locations and identify the movable cars
   itr_loc_next = buffer_loc_next.begin();
   itr_movable = buffer_movable.begin();
-  for (itr_loc = loc.begin(); itr_loc != loc.end(); itr_loc++)
+  for (itr_loc = loc.begin(); itr_loc != loc.end(); itr_loc++, itr_loc_next++, itr_movable++)
   {
     *itr_loc_next = nextLoc(*itr_loc, r, c);
     if (g[*itr_loc_next] == 0) // The next location is not occupied, move the car
     {
       *itr_movable = true;
       movable_any = true;
-      //Rcout << "FUCK" << std::endl;
     }
     else
     {
       *itr_movable = false;
     }
-    itr_loc_next++;
-    itr_movable++;
   }
   
   // The second loop: move cars according to the result from the first loop
   itr_loc_next = buffer_loc_next.begin();
   itr_movable = buffer_movable.begin();
-  for (itr_loc = loc.begin(); itr_loc != loc.end(); itr_loc++)
+  for (itr_loc = loc.begin(); itr_loc != loc.end(); itr_loc++, itr_loc_next++, itr_movable++)
   {
     if (*itr_movable) // The next location is not occupied, move the car
     {
       g[*itr_loc_next] = g[*itr_loc];
       g[*itr_loc] = 0;
       *itr_loc = *itr_loc_next;
-      //Rcout << "yooo~" << std::endl;
     }
-    itr_loc_next++;
-    itr_movable++;
   }
   return movable_any;
 }
