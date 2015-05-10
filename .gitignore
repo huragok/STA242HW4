@@ -15,3 +15,7 @@ images
 js
 *.html
 .Rproj.user
+*.tar.gz
+*.o
+*.so
+*.rds

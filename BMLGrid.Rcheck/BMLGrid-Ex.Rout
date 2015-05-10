@@ -1,0 +1,143 @@
+
+R version 3.2.0 (2015-04-16) -- "Full of Ingredients"
+Copyright (C) 2015 The R Foundation for Statistical Computing
+Platform: x86_64-pc-linux-gnu (64-bit)
+
+R is free software and comes with ABSOLUTELY NO WARRANTY.
+You are welcome to redistribute it under certain conditions.
+Type 'license()' or 'licence()' for distribution details.
+
+  Natural language support but running in an English locale
+
+R is a collaborative project with many contributors.
+Type 'contributors()' for more information and
+'citation()' on how to cite R or R packages in publications.
+
+Type 'demo()' for some demos, 'help()' for on-line help, or
+'help.start()' for an HTML browser interface to help.
+Type 'q()' to quit R.
+
+> pkgname <- "BMLGrid"
+> source(file.path(R.home("share"), "R", "examples-header.R"))
+> options(warn = 1)
+> library('BMLGrid')
+> 
+> base::assign(".oldSearch", base::search(), pos = 'CheckExEnv')
+> cleanEx()
+> nameEx("createBMLGrid")
+> ### * createBMLGrid
+> 
+> flush(stderr()); flush(stdout())
+> 
+> ### Name: createBMLGrid
+> ### Title: Constructor for S3 class BMLGrid
+> ### Aliases: createBMLGrid
+> 
+> ### ** Examples
+> 
+> library(BMLGrid)
+> g = createBMLGrid(r = 100, c = 99, ncars = c(red = 100, blue = 100))
+> 
+> 
+> 
+> cleanEx()
+> nameEx("crunBMLGrid")
+> ### * crunBMLGrid
+> 
+> flush(stderr()); flush(stdout())
+> 
+> ### Name: crunBMLGrid
+> ### Title: Simulator for Biham-Middleton-Levine Traffic Model written in
+> ###   c++.
+> ### Aliases: crunBMLGrid
+> 
+> ### ** Examples
+> 
+> library(BMLGrid)
+> g = createBMLGrid(r = 100, c = 99, ncars = c(red = 100, blue = 100))
+> g.out = crunBMLGrid(g, 10000)
+> plot(g.out)
+> 
+> 
+> 
+> cleanEx()
+> nameEx("plot.BMLGrid")
+> ### * plot.BMLGrid
+> 
+> flush(stderr()); flush(stdout())
+> 
+> ### Name: plot.BMLGrid
+> ### Title: plot method for BMLGrid class object
+> ### Aliases: plot.BMLGrid
+> 
+> ### ** Examples
+> 
+> library(BMLGrid)
+> g = createBMLGrid(r = 100, c = 99, ncars = c(red = 100, blue = 100))
+> plot(g)
+> 
+> 
+> 
+> cleanEx()
+> nameEx("runBMLGrid")
+> ### * runBMLGrid
+> 
+> flush(stderr()); flush(stdout())
+> 
+> ### Name: runBMLGrid
+> ### Title: Simulator for Biham-Middleton-Levine Traffic Model.
+> ### Aliases: runBMLGrid
+> 
+> ### ** Examples
+> 
+> library(BMLGrid)
+> g = createBMLGrid(r = 100, c = 99, ncars = c(red = 100, blue = 100))
+> g.out = runBMLGrid(g, numSteps = 10000)
+> plot(g.out)
+> g.out = runBMLGrid(g, numSteps = 50, movieName = 'movieBMLGrid', recordSpeed = TRUE)
+HTML file created at: index.html
+> plot(g.out$g)
+> summary(g.out$v.blue)
+   Min. 1st Qu.  Median    Mean 3rd Qu.    Max. 
+ 0.9400  0.9700  0.9800  0.9772  0.9900  1.0000 
+> summary(g.out$v.red)
+   Min. 1st Qu.  Median    Mean 3rd Qu.    Max. 
+ 0.9600  0.9700  0.9800  0.9816  0.9900  1.0000 
+> 
+> 
+> 
+> cleanEx()
+> nameEx("summary.BMLGrid")
+> ### * summary.BMLGrid
+> 
+> flush(stderr()); flush(stdout())
+> 
+> ### Name: summary.BMLGrid
+> ### Title: summary method for BMLGrid class object
+> ### Aliases: summary.BMLGrid
+> 
+> ### ** Examples
+> 
+> library(BMLGrid)
+> g = createBMLGrid(r = 100, c = 99, ncars = c(red = 100, blue = 100))
+> summary(g)
+BMLGrid class object.
+ - 100 rows, 99 columns
+ - 100 red, 100 blue.
+> 
+> 
+> 
+> ### * <FOOTER>
+> ###
+> options(digits = 7L)
+> base::cat("Time elapsed: ", proc.time() - base::get("ptime", pos = 'CheckExEnv'),"\n")
+Time elapsed:  1.952 0.036 1.997 0 0.005 
+> grDevices::dev.off()
+null device 
+          1 
+> ###
+> ### Local variables: ***
+> ### mode: outline-minor ***
+> ### outline-regexp: "\\(> \\)?### [*]+" ***
+> ### End: ***
+> quit('no')

@@ -1,0 +1,9 @@
+BMLGrid-package         BMLGrid: a package to simulate the
+                        Biham-Middleton-Levine Traffic Model.
+createBMLGrid           Constructor for S3 class BMLGrid
+crunBMLGrid             Simulator for Biham-Middleton-Levine Traffic
+                        Model written in c++.
+plot.BMLGrid            plot method for BMLGrid class object
+runBMLGrid              Simulator for Biham-Middleton-Levine Traffic
+                        Model.
+summary.BMLGrid         summary method for BMLGrid class object
