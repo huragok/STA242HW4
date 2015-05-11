@@ -131,7 +131,7 @@ BMLGrid class object.
 > ###
 > options(digits = 7L)
 > base::cat("Time elapsed: ", proc.time() - base::get("ptime", pos = 'CheckExEnv'),"\n")
-Time elapsed:  1.952 0.036 1.997 0 0.005 
+Time elapsed:  1.254 0.013 1.273 0 0.003 
 > grDevices::dev.off()
 null device 
           1 

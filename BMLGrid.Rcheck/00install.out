@@ -1,7 +1,7 @@
 * installing *source* package ‘BMLGrid’ ...
 ** libs
-g++ -I/usr/share/R/include -DNDEBUG   -I"/home/wenhaowu/R/x86_64-pc-linux-gnu-library/3.2/Rcpp/include"   -fpic  -std=c++11 -c BMLGrid.cpp -o BMLGrid.o
-g++ -I/usr/share/R/include -DNDEBUG   -I"/home/wenhaowu/R/x86_64-pc-linux-gnu-library/3.2/Rcpp/include"   -fpic  -std=c++11 -c RcppExports.cpp -o RcppExports.o
+g++ -I/usr/share/R/include -DNDEBUG   -I"/home/wenhaowu/R/x86_64-pc-linux-gnu-library/3.2/Rcpp/include"  -std=c++11 -fpic  -g -O2 -fstack-protector --param=ssp-buffer-size=4 -Wformat -Werror=format-security -D_FORTIFY_SOURCE=2 -g  -c BMLGrid.cpp -o BMLGrid.o
+g++ -I/usr/share/R/include -DNDEBUG   -I"/home/wenhaowu/R/x86_64-pc-linux-gnu-library/3.2/Rcpp/include"  -std=c++11 -fpic  -g -O2 -fstack-protector --param=ssp-buffer-size=4 -Wformat -Werror=format-security -D_FORTIFY_SOURCE=2 -g  -c RcppExports.cpp -o RcppExports.o
 g++ -shared -L/usr/lib/R/lib -Wl,-Bsymbolic-functions -Wl,-z,relro -o BMLGrid.so BMLGrid.o RcppExports.o -L/usr/lib/R/lib -lR
 installing to /home/wenhaowu/Documents/UC Davis/2015 Spring/STA 242/stat242_2015_assignment3/BMLGrid.Rcheck/BMLGrid/libs
 ** R

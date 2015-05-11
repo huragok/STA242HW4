@@ -21,13 +21,24 @@ Type 'q()' to quit R.
 > test_check("BMLGrid")
 Create a BMLGrid object : ........
 Run BMLGrid simulation : ............
-Run BMLGrid simulation in c++ : ....Grid lock detected at step 721
-..
+Run BMLGrid simulation in c++ : ....Grid lock detected at step 6512
+Grid lock detected at step 1078
+Grid lock detected at step 926
+Grid lock detected at step 2660
+Grid lock detected at step 809
+Grid lock detected at step 598
+Grid lock detected at step 604
+Grid lock detected at step 662
+Grid lock detected at step 603
+Grid lock detected at step 2
+Grid lock detected at step 2
+Grid lock detected at step 2
+Grid lock detected at step 2
+Grid lock detected at step 2
+......
 
-Warning messages:
-1: In runBMLGrid(g, 0) : Degenerate BMLGrid object!
-2: In runBMLGrid(g1, 1000) : Grid lock detected at step 721
+There were 15 warnings (use warnings() to see them)
 > 
 > proc.time()
    user  system elapsed 
-  5.280   0.029   5.299 
+ 33.723   0.485  33.703 

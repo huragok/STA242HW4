@@ -34,6 +34,7 @@ IntegerMatrix crunBMLGrid(IntegerMatrix gInput, int numSteps)
   bool movable;
   for (int step = 0; step < numSteps; step++)
   {
+    checkUserInterrupt();
     if (0 == step % 2)
     {
       movable = moveCars(g, blue, nextLocUp, buffer_loc_next, buffer_movable);
