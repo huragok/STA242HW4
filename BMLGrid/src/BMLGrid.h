@@ -15,11 +15,11 @@ using namespace Rcpp;
 //' @examples
 //' library(BMLGrid)
 //' g = createBMLGrid(r = 100, c = 99, ncars = c(red = 100, blue = 100))
-//' g.out = crunBMLGrid(g, 10000)
+//' g.out = crunBMLGrid1(g, 10000)
 //' plot(g.out)
 //' @export
 // [[Rcpp::export]]
-IntegerMatrix crunBMLGrid(IntegerMatrix g, int numSteps);
+IntegerMatrix crunBMLGrid1(IntegerMatrix g, int numSteps);
 
 // Function to locate in grid 'g' all cars of 'color', equivalent to which()
 IntegerVector locateColor(const IntegerVector& g, int color);
@@ -40,4 +40,20 @@ int nextLocUp(int loc, int r, int c);
 // Function to return the location (cyclicly) above the current location
 int nextLocRight(int loc, int r, int c);
 
+//' Function to get the vector index of the grid right to the current grid.
+//' 
+//' c++ implementation of the idx_right() fucntion
+//' @param idx Current locations (vector index in the grid) of cars of a certain color.
+//' @param r numbers of rows
+//' @param c number of columns
+// [[Rcpp::export]]
+IntegerVector cidx_right(IntegerVector idx, int r, int c);
+
+//' Function to get the vector index of the grid above the current grid.
+//' 
+//' c++ implementation of the idx_up() fucntion
+//' @param idx Current locations (vector index in the grid) of cars of a certain color.
+//' @param r numbers of rows
+// [[Rcpp::export]]
+IntegerVector cidx_up(IntegerVector idx, int r);
 #endif

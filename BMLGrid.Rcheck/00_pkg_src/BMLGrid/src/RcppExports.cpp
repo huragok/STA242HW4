@@ -5,15 +5,40 @@
 
 using namespace Rcpp;
 
-// crunBMLGrid
-IntegerMatrix crunBMLGrid(IntegerMatrix g, int numSteps);
-RcppExport SEXP BMLGrid_crunBMLGrid(SEXP gSEXP, SEXP numStepsSEXP) {
+// crunBMLGrid1
+IntegerMatrix crunBMLGrid1(IntegerMatrix g, int numSteps);
+RcppExport SEXP BMLGrid_crunBMLGrid1(SEXP gSEXP, SEXP numStepsSEXP) {
 BEGIN_RCPP
     Rcpp::RObject __result;
     Rcpp::RNGScope __rngScope;
     Rcpp::traits::input_parameter< IntegerMatrix >::type g(gSEXP);
     Rcpp::traits::input_parameter< int >::type numSteps(numStepsSEXP);
-    __result = Rcpp::wrap(crunBMLGrid(g, numSteps));
+    __result = Rcpp::wrap(crunBMLGrid1(g, numSteps));
+    return __result;
+END_RCPP
+}
+// cidx_right
+IntegerVector cidx_right(IntegerVector idx, int r, int c);
+RcppExport SEXP BMLGrid_cidx_right(SEXP idxSEXP, SEXP rSEXP, SEXP cSEXP) {
+BEGIN_RCPP
+    Rcpp::RObject __result;
+    Rcpp::RNGScope __rngScope;
+    Rcpp::traits::input_parameter< IntegerVector >::type idx(idxSEXP);
+    Rcpp::traits::input_parameter< int >::type r(rSEXP);
+    Rcpp::traits::input_parameter< int >::type c(cSEXP);
+    __result = Rcpp::wrap(cidx_right(idx, r, c));
+    return __result;
+END_RCPP
+}
+// cidx_up
+IntegerVector cidx_up(IntegerVector idx, int r);
+RcppExport SEXP BMLGrid_cidx_up(SEXP idxSEXP, SEXP rSEXP) {
+BEGIN_RCPP
+    Rcpp::RObject __result;
+    Rcpp::RNGScope __rngScope;
+    Rcpp::traits::input_parameter< IntegerVector >::type idx(idxSEXP);
+    Rcpp::traits::input_parameter< int >::type r(rSEXP);
+    __result = Rcpp::wrap(cidx_up(idx, r));
     return __result;
 END_RCPP
 }

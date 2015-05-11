@@ -1,8 +1,14 @@
 BMLGrid-package         BMLGrid: a package to simulate the
                         Biham-Middleton-Levine Traffic Model.
+cidx_right              Function to get the vector index of the grid
+                        right to the current grid.
+cidx_up                 Function to get the vector index of the grid
+                        above the current grid.
 createBMLGrid           Constructor for S3 class BMLGrid
-crunBMLGrid             Simulator for Biham-Middleton-Levine Traffic
+crunBMLGrid1            Simulator for Biham-Middleton-Levine Traffic
                         Model written in c++.
+crunBMLGrid2            Simulator for Biham-Middleton-Levine Traffic
+                        Model, with key operations written in C++.
 plot.BMLGrid            plot method for BMLGrid class object
 runBMLGrid              Simulator for Biham-Middleton-Levine Traffic
                         Model.

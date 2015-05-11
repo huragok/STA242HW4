@@ -70,18 +70,21 @@ No file Rd2.aux.
 (/usr/share/texlive/texmf-dist/tex/latex/base/utf8.def) [1{/var/lib/texmf/fonts
 /map/pdftex/updmap/pdftex.map}]
 (/usr/share/texlive/texmf-dist/tex/latex/base/utf8.def)
+(/usr/share/texlive/texmf-dist/tex/latex/base/utf8.def) [2]
+(/usr/share/texlive/texmf-dist/tex/latex/base/utf8.def)
 (/usr/share/texlive/texmf-dist/tex/latex/inconsolata/ts1zi4.fd)
-Overfull \hbox (6.36926pt too wide) in paragraph at lines 81--82
+Overfull \hbox (6.36926pt too wide) in paragraph at lines 123--124
 []\T1/ptm/m/n/10 A named vec-tor of 2 non-negative in-te-gers where \T1/zi4/m/n
 /10 ncars[\TS1/zi4/m/n/10 '\T1/zi4/m/n/10 red\TS1/zi4/m/n/10 '\T1/zi4/m/n/10 ]\
 T1/ptm/m/n/10 , \T1/zi4/m/n/10 ncars[\TS1/zi4/m/n/10 '\T1/zi4/m/n/10 blue\TS1/z
 i4/m/n/10 '\T1/zi4/m/n/10 ]
-(/usr/share/texlive/texmf-dist/tex/latex/base/utf8.def) [2]
-(/usr/share/texlive/texmf-dist/tex/latex/base/utf8.def)
 (/usr/share/texlive/texmf-dist/tex/latex/base/utf8.def) [3]
 (/usr/share/texlive/texmf-dist/tex/latex/base/utf8.def) [4]
+(/usr/share/texlive/texmf-dist/tex/latex/base/utf8.def)
+(/usr/share/texlive/texmf-dist/tex/latex/base/utf8.def) [5]
+(/usr/share/texlive/texmf-dist/tex/latex/base/utf8.def)
 No file Rd2.ind.
-[5] (./Rd2.aux)
+[6] (./Rd2.aux)
 
 Package rerunfilecheck Warning: File `Rd2.out' has changed.
 (rerunfilecheck)                Rerun to get outlines right
@@ -97,12 +100,12 @@ consolata-zi4r.pfb></usr/share/texlive/texmf-dist/fonts/type1/urw/helvetic/uhvr
 are/texlive/texmf-dist/fonts/type1/urw/times/utmr8a.pfb></usr/share/texlive/tex
 mf-dist/fonts/type1/urw/times/utmr8a.pfb></usr/share/texlive/texmf-dist/fonts/t
 ype1/urw/times/utmri8a.pfb>
-Output written on Rd2.pdf (5 pages, 76870 bytes).
+Output written on Rd2.pdf (6 pages, 80488 bytes).
 Transcript written on Rd2.log.
 This is makeindex, version 2.15 [TeX Live 2013] (kpathsea + Thai support).
-Scanning input file Rd2.idx....done (13 entries accepted, 0 rejected).
-Sorting entries....done (48 comparisons).
-Generating output file Rd2.ind....done (34 lines written, 0 warnings).
+Scanning input file Rd2.idx....done (17 entries accepted, 0 rejected).
+Sorting entries....done (66 comparisons).
+Generating output file Rd2.ind....done (38 lines written, 0 warnings).
 Output written in Rd2.ind.
 Transcript written in Rd2.ilg.
 This is pdfTeX, Version 3.1415926-2.5-1.40.14 (TeX Live 2013/Debian)
@@ -174,22 +177,25 @@ Writing index file Rd2.idx
 (/usr/share/texlive/texmf-dist/tex/latex/psnfss/t1phv.fd) (./Rd2.toc)
 (/usr/share/texlive/texmf-dist/tex/latex/base/utf8.def) [1{/var/lib/texmf/fonts
 /map/pdftex/updmap/pdftex.map}]
+(/usr/share/texlive/texmf-dist/tex/latex/base/utf8.def) [2]
+(/usr/share/texlive/texmf-dist/tex/latex/base/utf8.def)
 (/usr/share/texlive/texmf-dist/tex/latex/base/utf8.def)
 (/usr/share/texlive/texmf-dist/tex/latex/inconsolata/ts1zi4.fd)
-Overfull \hbox (6.36926pt too wide) in paragraph at lines 81--82
+Overfull \hbox (6.36926pt too wide) in paragraph at lines 123--124
 []\T1/ptm/m/n/10 A named vec-tor of 2 non-negative in-te-gers where \T1/zi4/m/n
 /10 ncars[\TS1/zi4/m/n/10 '\T1/zi4/m/n/10 red\TS1/zi4/m/n/10 '\T1/zi4/m/n/10 ]\
 T1/ptm/m/n/10 , \T1/zi4/m/n/10 ncars[\TS1/zi4/m/n/10 '\T1/zi4/m/n/10 blue\TS1/z
 i4/m/n/10 '\T1/zi4/m/n/10 ]
-[2] (/usr/share/texlive/texmf-dist/tex/latex/base/utf8.def)
 (/usr/share/texlive/texmf-dist/tex/latex/base/utf8.def) [3]
 (/usr/share/texlive/texmf-dist/tex/latex/base/utf8.def) [4]
-(/usr/share/texlive/texmf-dist/tex/latex/base/utf8.def) (./Rd2.ind [5]
+(/usr/share/texlive/texmf-dist/tex/latex/base/utf8.def)
+(/usr/share/texlive/texmf-dist/tex/latex/base/utf8.def) [5]
+(/usr/share/texlive/texmf-dist/tex/latex/base/utf8.def) (./Rd2.ind [6]
 
 LaTeX Font Warning: Font shape `T1/zi4/m/it' undefined
 (Font)              using `T1/zi4/m/n' instead on input line 8.
 
-[6]) (./Rd2.aux)
+[7]) (./Rd2.aux)
 
 Package rerunfilecheck Warning: File `Rd2.out' has changed.
 (rerunfilecheck)                Rerun to get outlines right
@@ -209,12 +215,12 @@ m/cmsy10.pfb></usr/share/texlive/texmf-dist/fonts/type1/urw/helvetic/uhvr8a.pfb
 xlive/texmf-dist/fonts/type1/urw/times/utmr8a.pfb></usr/share/texlive/texmf-dis
 t/fonts/type1/urw/times/utmr8a.pfb></usr/share/texlive/texmf-dist/fonts/type1/u
 rw/times/utmri8a.pfb>
-Output written on Rd2.pdf (6 pages, 86054 bytes).
+Output written on Rd2.pdf (7 pages, 90040 bytes).
 Transcript written on Rd2.log.
 This is makeindex, version 2.15 [TeX Live 2013] (kpathsea + Thai support).
-Scanning input file Rd2.idx....done (13 entries accepted, 0 rejected).
-Sorting entries....done (48 comparisons).
-Generating output file Rd2.ind....done (34 lines written, 1 warning).
+Scanning input file Rd2.idx....done (17 entries accepted, 0 rejected).
+Sorting entries....done (66 comparisons).
+Generating output file Rd2.ind....done (38 lines written, 0 warnings).
 Output written in Rd2.ind.
 Transcript written in Rd2.ilg.
 This is pdfTeX, Version 3.1415926-2.5-1.40.14 (TeX Live 2013/Debian)
@@ -286,22 +292,25 @@ Writing index file Rd2.idx
 (/usr/share/texlive/texmf-dist/tex/latex/psnfss/t1phv.fd) (./Rd2.toc)
 (/usr/share/texlive/texmf-dist/tex/latex/base/utf8.def) [1{/var/lib/texmf/fonts
 /map/pdftex/updmap/pdftex.map}]
+(/usr/share/texlive/texmf-dist/tex/latex/base/utf8.def) [2]
+(/usr/share/texlive/texmf-dist/tex/latex/base/utf8.def)
 (/usr/share/texlive/texmf-dist/tex/latex/base/utf8.def)
 (/usr/share/texlive/texmf-dist/tex/latex/inconsolata/ts1zi4.fd)
-Overfull \hbox (6.36926pt too wide) in paragraph at lines 81--82
+Overfull \hbox (6.36926pt too wide) in paragraph at lines 123--124
 []\T1/ptm/m/n/10 A named vec-tor of 2 non-negative in-te-gers where \T1/zi4/m/n
 /10 ncars[\TS1/zi4/m/n/10 '\T1/zi4/m/n/10 red\TS1/zi4/m/n/10 '\T1/zi4/m/n/10 ]\
 T1/ptm/m/n/10 , \T1/zi4/m/n/10 ncars[\TS1/zi4/m/n/10 '\T1/zi4/m/n/10 blue\TS1/z
 i4/m/n/10 '\T1/zi4/m/n/10 ]
-[2] (/usr/share/texlive/texmf-dist/tex/latex/base/utf8.def)
 (/usr/share/texlive/texmf-dist/tex/latex/base/utf8.def) [3]
 (/usr/share/texlive/texmf-dist/tex/latex/base/utf8.def) [4]
-(/usr/share/texlive/texmf-dist/tex/latex/base/utf8.def) (./Rd2.ind [5]
+(/usr/share/texlive/texmf-dist/tex/latex/base/utf8.def)
+(/usr/share/texlive/texmf-dist/tex/latex/base/utf8.def) [5]
+(/usr/share/texlive/texmf-dist/tex/latex/base/utf8.def) (./Rd2.ind [6]
 
 LaTeX Font Warning: Font shape `T1/zi4/m/it' undefined
 (Font)              using `T1/zi4/m/n' instead on input line 8.
 
-[6]) (./Rd2.aux)
+[7]) (./Rd2.aux)
 
 LaTeX Font Warning: Some font shapes were not available, defaults substituted.
 
@@ -316,8 +325,8 @@ m/cmsy10.pfb></usr/share/texlive/texmf-dist/fonts/type1/urw/helvetic/uhvr8a.pfb
 xlive/texmf-dist/fonts/type1/urw/times/utmr8a.pfb></usr/share/texlive/texmf-dis
 t/fonts/type1/urw/times/utmr8a.pfb></usr/share/texlive/texmf-dist/fonts/type1/u
 rw/times/utmri8a.pfb>
-Output written on Rd2.pdf (6 pages, 86382 bytes).
+Output written on Rd2.pdf (7 pages, 90162 bytes).
 Transcript written on Rd2.log.
 Saving output to 'BMLGrid-manual.pdf' ...
 Done
-You may want to clean up by 'rm -rf /tmp/Rtmp9khMkC/Rd2pdf6edac2765ef'
+You may want to clean up by 'rm -rf /tmp/RtmpaXeGjm/Rd2pdf717f42904935'

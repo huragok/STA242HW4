@@ -1,7 +1,10 @@
 BMLGrid-package	BMLGrid-package
 BMLGrid	BMLGrid-package
+cidx_right	cidx_right
+cidx_up	cidx_up
 createBMLGrid	createBMLGrid
-crunBMLGrid	crunBMLGrid
+crunBMLGrid1	crunBMLGrid1
+crunBMLGrid2	crunBMLGrid2
 plot.BMLGrid	plot.BMLGrid
 runBMLGrid	runBMLGrid
 summary.BMLGrid	summary.BMLGrid

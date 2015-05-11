@@ -1,7 +1,7 @@
 #include "BMLGrid.h"
 using namespace Rcpp;
 
-IntegerMatrix crunBMLGrid(IntegerMatrix gInput, int numSteps)
+IntegerMatrix crunBMLGrid1(IntegerMatrix gInput, int numSteps)
 {
   IntegerMatrix g = clone(gInput); // Copy the input matrix so that it won't be affected by the undefined behavior of modifying inputs
   int r = g.nrow();
@@ -111,4 +111,28 @@ int nextLocUp(int loc, int r, int c)
 int nextLocRight(int loc, int r, int c)
 {
   return((loc + r) % (r * c));
+}
+
+IntegerVector cidx_right(IntegerVector idx, int r, int c)
+{
+  IntegerVector idx_next(idx.size());
+  IntegerVector::iterator itr_idx, itr_idx_next;
+  itr_idx_next = idx_next.begin();
+  for (itr_idx = idx.begin(); itr_idx != idx.end(); itr_idx++, itr_idx_next++)
+  {
+    *itr_idx_next = nextLocRight(*itr_idx - 1, r, c) + 1;
+  }
+  return(idx_next);
+}
+
+IntegerVector cidx_up(IntegerVector idx, int r)
+{
+  IntegerVector idx_next(idx.size());
+  IntegerVector::iterator itr_idx, itr_idx_next;
+  itr_idx_next = idx_next.begin();
+  for (itr_idx = idx.begin(); itr_idx != idx.end(); itr_idx++, itr_idx_next++)
+  {
+    *itr_idx_next = nextLocUp(*itr_idx - 1, r, 0) + 1;
+  }
+  return(idx_next);
 }

@@ -151,6 +151,67 @@ runBMLGrid <- function(g, numSteps, movieName = NULL, recordSpeed = FALSE) {
   return(g)
 }
 
+#' Simulator for Biham-Middleton-Levine Traffic Model, with key operations written in C++.
+#' 
+#' The function that actuall runs the Biham-Middleton-Levine Traffic Model from an initial state by a given number of steps.
+#'
+#' @import animation 
+#' @param g A BMLGrid class object representing the initial state of the grid.
+#' @param numSteps Number of moves/periods.
+#' @return a \code{BMLGrid} object representing the final state of the simulation.
+#' @examples
+#' library(BMLGrid)
+#' g = createBMLGrid(r = 100, c = 99, ncars = c(red = 100, blue = 100))
+#' g.out = crunBMLGrid2(g, numSteps = 10000)
+#' plot(g.out)
+#' @export
+crunBMLGrid2 <- function(g, numSteps) {
+  r <- nrow(g)
+  c <- ncol(g)
+  red <- which(g == 1L) # Get the initial locations of red and blue cars
+  blue <- which(g == 2L)
+  white <- which(g == 0L)
+  
+  if (length(red) + length(blue) + length(white) != r * c || typeof(g) != "integer")
+  {
+    stop("Wrong grid format: values should be 0, 1, 2 only!")
+  }
+  if (!is.numeric(numSteps) || numSteps < 0 || as.integer(numSteps) != numSteps){
+    stop("numSteps must be an integer greater than or equal to 0!")
+  }
+  if (r == 0 || c == 0 || (length(red) + length(blue)) == 0) { # Degenerate cases, return immediatly
+    warning('Degenerate BMLGrid object!')
+    flush.console()
+    return(g)
+  }
+  
+  movable_any <- TRUE
+  for (step in seq_len(numSteps)) {
+    if (step %% 2 == 0) { # Red cars move to right by 1 grid
+      red_right <- cidx_right(red, r, c) # The vector index of the right grids to current red cars
+      movable <- (g[red_right] == 0L)
+      g[red[movable]] <- 0L # Update grid
+      g[red_right[movable]] <- 1L
+      red <- c(red_right[movable], red[!movable])
+    } else { # Blue cars move upward by 1 grid
+      blue_up <- cidx_up(blue, r) # The vector index of the right grids to current red cars
+      movable <- (g[blue_up] == 0L)
+      g[blue[movable]] <- 0L # Update grid
+      g[blue_up[movable]] <- 2L
+      blue <- c(blue_up[movable], blue[!movable])
+    }
+    if (!movable_any && !any(movable)) {
+      #warning('fuckyou!')
+      warning(paste('Grid lock detected at step', toString(step)))
+      flush.console()
+      break # We have entered a grid lock, no need to continue
+    } else {
+      movable_any <- any(movable)
+    }
+  }
+  return(g)
+}
+
 # Vectorized function to get the vector index of the right grid right to the current grid
 idx_right <- function(idx, r, c) {
   return((idx + r - 1) %% (r * c) + 1)

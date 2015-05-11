@@ -22,21 +22,41 @@ g = createBMLGrid(r = 100, c = 99, ncars = c(red = 100, blue = 100))
 
 
 cleanEx()
-nameEx("crunBMLGrid")
-### * crunBMLGrid
+nameEx("crunBMLGrid1")
+### * crunBMLGrid1
 
 flush(stderr()); flush(stdout())
 
-### Name: crunBMLGrid
+### Name: crunBMLGrid1
 ### Title: Simulator for Biham-Middleton-Levine Traffic Model written in
 ###   c++.
-### Aliases: crunBMLGrid
+### Aliases: crunBMLGrid1
 
 ### ** Examples
 
 library(BMLGrid)
 g = createBMLGrid(r = 100, c = 99, ncars = c(red = 100, blue = 100))
-g.out = crunBMLGrid(g, 10000)
+g.out = crunBMLGrid1(g, 10000)
+plot(g.out)
+
+
+
+cleanEx()
+nameEx("crunBMLGrid2")
+### * crunBMLGrid2
+
+flush(stderr()); flush(stdout())
+
+### Name: crunBMLGrid2
+### Title: Simulator for Biham-Middleton-Levine Traffic Model, with key
+###   operations written in C++.
+### Aliases: crunBMLGrid2
+
+### ** Examples
+
+library(BMLGrid)
+g = createBMLGrid(r = 100, c = 99, ncars = c(red = 100, blue = 100))
+g.out = crunBMLGrid2(g, numSteps = 10000)
 plot(g.out)
 
 
