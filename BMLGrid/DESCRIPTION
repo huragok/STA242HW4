@@ -6,7 +6,7 @@ Date: 2015-05-08
 Author: Wenhao Wu <wnhwu@ucdavis.edu>
 Maintainer: Wenhao Wu <wnhwu@ucdavis.edu>
 Description: This version is meant to provide a comparison between the performance of BML simulation with R vectorized operation and c++ for loop.
-URL: http://eeyore.ucdavis.edu/stat242/Homeworks/BML_C.html
+URL: https://bitbucket.org/shasqua/stat242_2015_assignment3/
 License: GPL (>=3)
 LinkingTo: Rcpp
 Imports: 

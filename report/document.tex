@@ -34,6 +34,19 @@
 \usepackage{hhline}% http://ctan.org/pkg/hhline
 \usepackage{caption}
 \usepackage{subcaption}
+\usepackage{listings}
+\usepackage{xcolor}
+\lstset{
+    numbers=left,
+    stepnumber=1,    
+    firstnumber=1,
+    numberfirstline=true,
+    basicstyle=\ttfamily,
+    keywordstyle=\color{blue}\ttfamily,
+    stringstyle=\color{red}\ttfamily,
+    commentstyle=\color{green}\ttfamily,
+    breaklines=true,
+}
 
 
 \setlength\parindent{0pt} % Removes all indentation from paragraphs
@@ -47,7 +60,8 @@
 %	DOCUMENT INFORMATION
 %----------------------------------------------------------------------------------------
 
-\title{UC Davis STA 242 2015 Spring Assignment 4} % Title
+\title{UC Davis STA 242 2015 Spring Assignment 4~\cite{wu2015bmlgrid_v1.1}} %
+% Title
 \author{Wenhao \textsc{Wu}, 9987583} % Author name
 \date{\today} % Date for the report
 
@@ -58,39 +72,105 @@
 
 \section{Implementation of \texttt{crunBMLGrid()}}
 In order to highlight the performance difference between R and C++
-implementation of BML simulation, we implement the entire \texttt{crunBMLGrid()}
-in C++. To do so, we made use of package `Rcpp'~\cite{}. The overall algorithm
-design is very similar to the original R function \texttt{runBMLGrid()}.
-However, at each step when we move all blue or red cars, the main operations are
-executed in a for-loop instead of vectorized, as defined in our C++ function
-\texttt{moveCars()}. As suggested by the example ``R vectorisation vs. C++
-vectorisation'' in~\cite{}, one advantage of C++ for-loop implementation over
-the R vecotrized operation is that it might need to create less intermediate
-vector variables. In our design we embraced this idea by passing reference
-variables to functions whenever possible and modifing them in-place (which may
-not be possible in R), and the necessary intermediate variables
-(\texttt{buffer\_loc\_next} and \texttt{buffer\_movable}) are also persistent.
+implementation of BML simulation, we implement 2 versions of the BML simulator
+routine:
+\begin{itemize}
+    \item \texttt{crunBMLGrid1()}: rewrite the entire \texttt{runBMLGrid()} in
+    C++.
+    \item \texttt{crunBMLGrid2()}: rewrite only the 2 key routines to get the
+    next location of cars (\texttt{idx\_right()} and \texttt{idx\_up()}) with
+    C++.
+\end{itemize}
+The overall algorithm design for both functions are very similar to the original
+R function \texttt{runBMLGrid()}. However, the R's vectorized operations are
+rewritten with C++ for-loops. As suggested by the example ``R vectorisation vs.
+C++ vectorisation'' in~\cite{wickham2014advanced}, one advantage of C++ for-loop
+implementation over the R vecotrized operation is that it might need to create less
+intermediate vector variables. Since our original 2 routines,
+\texttt{idx\_right()} and \texttt{idx\_up()}, both contains a few vectorized
+mathematic operations, we expect to achieve some performance gain with
+\texttt{crunBMLGrid2()}. Another main advantage of C++ over R is that it allows
+more efficient memory management: in our original \texttt{runBMLGrid()} when
+ever the grid \texttt{g} or the cars' locations \texttt{red} and \texttt{blue}
+is updated, R creates a new object instead of modifying in-place (as verified
+with function \texttt{address()} from package 'pryr'). This might
+results in a lot of redundant memory management operations under the hood. In
+\texttt{crunBMLGrid1()}, we use in-place modification whenever possible, which
+is mainly achieved by using reference inputs for self-defined functions. To
+interface our C++ functions and R we make use of package `Rcpp'.
 
 \section{Verification}
 We first verify qualitatively the behavior of BML model computed with our new
-\texttt{crunBMLGrid()} routine. As in our previous assignment, We pick a
+C++ routines. As in our previous assignment, We pick a
 $r=100$, $c=99$ grid in which the number of blue cars and red cars are the same. After $N =
 10000$ steps, the final states of the grid for $\rho = 0.2, 0.33, 0.38, 0.43,
-0.5$ are plotted in Fig.~\ref{fig:final_state}, where we observe the same
-chaotic phenomenon as the results computed with our original
-\texttt{runBMLGrid()} routine.
+0.5$ returnd by \texttt{crunBMLGrid1()} are plotted in
+Fig.~\ref{fig:final_state}, where we observe the same chaotic phenomenon as the
+results computed with our original \texttt{runBMLGrid()} routine.
+\texttt{crunBMLGrid2()} returns a similar results and is thus omitted.
 
-We further verify that \texttt{crunBMLGrid()} and \texttt{runBMLGrid()}
-returns identical result given the same input with package 'testthat'~\cite{}.
-Besides the degenerated cases, in a $r=100$, $c=99$ grid we test 6 different cases
-where there are different numbers of red and blue cars. For each case, we
-randomly generate 5 instances of initial grid \texttt{g}. Our tests make sure
-that the two routines returns identical result after $N =
-10000$ steps for all 30 runs. We have also manually checked that, upon early
-break from the outer for-loop due to grid lock when $\rho$ is large, the number of steps
-executed before breaking are the same for both routines.
+We further verify that \texttt{crunBMLGrid1()}, \texttt{crunBMLGrid2()} and
+\texttt{runBMLGrid()} return identical results given the same inputs with
+package 'testthat'. Besides the degenerated cases, in a $r=100$, $c=99$
+grid we test 6 different cases where there are different numbers of red and blue
+cars. For each case, we randomly generate 5 instances of initial grid
+\texttt{g}. Our tests make sure that both \texttt{crunBMLGrid1()} and
+\texttt{crunBMLGrid2()} return identical results after $N = 10000$ steps for all
+30 instances. We have also manually checked that, upon early break from the
+outer for-loop due to grid lock when $\rho$ is large, the number of steps executed
+before breaking are the same for all 3 routines.
 
-\begin{figure}[!t]
+\section{Running Time Comparison with R's Vectorized Operation}
+To compare the performance of \texttt{crunBMLGrid()} and \texttt{runBMLGrid()},
+we measure the running time of both functions for $r=c=128,256,512,1024$ and
+$\rho=0.1,0.2,9.3,0.4,0.5,0.6,0.7$. For each of the $4\times7=28$ settings we
+randomly generate 10 initial grids and apply \texttt{crunBMLGrid1()},
+\texttt{crunBMLGrid2()} and \texttt{runBMLGrid()} on them and record the average
+running time. We also fix the number of steps to $N=10000$ and have the same
+number of red and blue cars in the grid. Again we run this test on a Dell
+Precision T1700 workstation equipped with 16GB DDR3 RAM and a Core i7-4790K CPU
+in Ubuntu 14.04 OS. The average running time in seconds and the relative speed up from
+\texttt{runBMLGrid()} to \texttt{crunBMLGrid1()} and \texttt{crunBMLGrid2()} are
+plotted in Fig.~\ref{fig:running_time} and Fig.~\ref{fig:speed_up}, repectively.
+The original data of Fig.~\ref{fig:running_time} is also provided in the
+Appendix A. The main results are summarized as follows:
+\begin{itemize}
+    \item For \texttt{crunBMLGrid2()} where only the key routines are rewritten
+    in C++, there is a limited speed up of less than 2x, and this speed up
+    remains relatively constant for different $\rho$ and $l$.
+    \item For \texttt{crunBMLGrid1()} which is entirely rewritten in C++, there
+    is a significant speed up from 4x to 9x. In general, the larger the edge
+    length, the smaller the speed up is. The speed up for cases where there is
+    no grid lock detected is significantly higher than the cases where there is
+    grid lock and early breaks. Surprisingly, the peak of running time for both
+    \texttt{runBMLGrid()} and \texttt{crunBMLGrid2()} appears at $\rho = 0.3$,
+    yet that for \texttt{crunBMLGrid1()} appears at $\rho = 0.4$ (In our
+    running time test we have also verified that all 3 functions returned the
+    same results). The above two observations probably indicate that early break
+    from the outer for-loop in \texttt{crunBMLGrid1()} comes with a significant
+    price.
+\end{itemize}
+
+
+\section{Conclusion}
+Based on the above results, our conclusion is
+\begin{itemize}
+    \item In this assignment, it is not worth rewriting the key routines in C++
+    as in \texttt{crunBMLGrid2()}, since the performance improvement is very
+    limited.
+    \item Although \texttt{crunBMLGrid2()} offers considerable speed up, in my
+    opinion it is still not worth rewriting the entire routine in C++. First of
+    all, unless we are dealing with really time-consuming simulation, R's
+    advantage of agile development will outweigh the greater running speed of
+    C++ routine. Also it is more difficult for C++ routine to return
+    differen types of outputs given different inputs. Finally, it is more
+    difficult to add other functionalities (such as animation) to the C++
+    routines not being able to use the abundant R packages.
+    \item It is not worth implementing the grid creation function in C since
+    this is not a compuation-intensive routine.
+\end{itemize}
+
+\begin{figure}[H]
     \begin{minipage}[b]{0.5\linewidth}
       \centering
       \centerline{\includegraphics[width=6.0cm]{./figs/TestBehavior_100_99_10000_02_end.pdf}}
@@ -125,43 +205,7 @@ executed before breaking are the same for both routines.
     \label{fig:final_state}
 \end{figure}
 
-
-\section{Running Time Comparison with R's Vectorized Operation}
-To compare the performance of \texttt{crunBMLGrid()} and \texttt{runBMLGrid()},
-we measure the running time of both functions for $r=c=128,256,512,1024$ and
-$\rho=0.1,0.2,9.3,0.4,0.5,0.6,0.7$. For each of the $4\times7=28$ settings we
-randomly generate 10 initial grids and apply both \texttt{crunBMLGrid()} and
-\texttt{runBMLGrid()} on them and record the average running time. We also fix
-the number of steps to $N=10000$ and have the same number of red and blue cars
-in the grid. Again we run this test on a Dell Precision T1700 workstation
-equipped with 16GB DDR3 RAM and a Core i7-4790K CPU in Ubuntu 14.04 OS. The
-average running time in seconds and the relative speed up from
-\texttt{runBMLGrid()} to \texttt{crunBMLGrid()} are plotted in Fig.~\ref{fig:running_time}
-and Fig.~\ref{fig:speed_up}, repectively. The original data of
-Fig.~\ref{fig:running_time} is also provided in the Appendix. In our test cases,
-the speed up is from 3x to 10x. In general, the larger the edge length, the
-smaller the speed up is. Surprisingly, the speed up for cases where there is no
-grid lock detected is significantly higher than the cases where there is grid lock
-and early breaks. Our guess is that the initialization part of the routine takes
-a larger portion of time in \texttt{crunBMLGrid()} than in
-\texttt{runBMLGrid()}.
-
-\section{Conclusion}
-Based on the above results, our conclusion is
-\begin{itemize}
-    \item There is a speed up from rewritting R's vectorization-based
-    routines into C++ for-loop based routines in this assignment.
-    \item However, in my opinion a C++ implementation is not worthwhile. In our
-    case, the performance gain is not so significant, thus unless we are doing
-    really time-consuming simulations, using R's vectorization-based
-    routines is more advantageous in terms of agile development. Also, in order
-    to maximize the speed up, we have rewritten the entire \texttt{runBMLGrid()}
-    with C++. As a result, we cannot make the same function to return different
-    types of values for different inputs and it is more difficult to add other
-    functionalities (such as animation) to the function.
-\end{itemize}
-
-\begin{figure}[t]
+\begin{figure}[H]
     \centering
     \includegraphics[width=3.5in]{figs/TestRunningTime.pdf}
     \caption{User time of \texttt{crunBMLGrid(g, 10000)} \texttt{runBMLGrid(g,
@@ -170,22 +214,93 @@ Based on the above results, our conclusion is
     \label{fig:running_time}
 \end{figure}
 
-\begin{figure}[t]
+\begin{figure}[H]
     \centering
     \includegraphics[width=3.5in]{figs/SpeedUp.pdf}
     \caption{Relative speed up by rewriting the R routine with C++.}
     \label{fig:speed_up}
 \end{figure}
 
-\section{Appendix A: Running Time Results}
-
-\section{Appendix B:}
 %\pagebreak
-%	BIBLIOGRAPHY
+%   BIBLIOGRAPHY
 %----------------------------------------------------------------------------------------
 
 \bibliographystyle{unsrt}
 \bibliography{myrefs}
+
+\section*{Appendix A: Running Time Results}
+\label{sec:append_A}
+\begin{table}[H]
+    \renewcommand{\arraystretch}{1.3}
+    \caption{Average running time of \texttt{runBMLGrid()} for different edge
+    length ($l$) and car density ($\rho$). The number of red and blue cars are
+    equal and the average running time is measured with 10 random initial grids
+    for each case for $N=10000$ steps.}
+    \label{tab:time_runBMLGrid}
+    \centering
+    \begin{tabular}{c|ccccccc}
+        \hline
+          $l$ & $\rho = 0.1$ & $\rho = 0.2$& $\rho = 0.3$ &$\rho = 0.4$ & $\rho
+          = 0.5$ & $\rho = 0.6$ & $\rho = 0.7$ \\
+        \hline
+        $128$ & 0.7726 & 1.4485 & 2.1080 & 1.3458 & 0.2242 & 0.1729 & 0.0862 \\
+        $256$ & 2.8686 & 5.6584 & 8.8592 & 8.1394 & 1.6388 &  1.2199 & 0.4517 \\
+        $512$ & 11.5545 & 20.1091 & 30.7582 & 21.1879 & 11.2239 & 6.7548 &
+        2.0129\\
+        $1024$ & 44.0835 & 89.9521 & 125.3059 & 94.6253 & 86.7233 & 36.9050 & 
+        9.4589\\
+        \hline
+    \end{tabular}
+\end{table}
+
+\begin{table}[H]
+    \renewcommand{\arraystretch}{1.3}
+    \caption{Average running time of \texttt{crunBMLGrid1()}.}
+    \label{tab:time_crunBMLGrid1}
+    \centering
+    \begin{tabular}{c|ccccccc}
+        \hline
+          $l$ & $\rho = 0.1$ & $\rho = 0.2$& $\rho = 0.3$ &$\rho = 0.4$ & $\rho
+          = 0.5$ & $\rho = 0.6$ & $\rho = 0.7$ \\
+        \hline
+        $128$ & 0.0902 & 0.1781 & 0.2718 & 0.3095 & 0.0578 & 0.0425 & 0.0214 \\
+        $256$ & 0.3734 & 0.7179 & 1.1281 & 1.7220 & 0.3671 & 0.2658 & 0.0954 \\
+        $512$ & 1.5264 & 2.9042 & 4.4529 & 5.3124 & 2.8402 & 1.6575 & 0.4970 \\
+        $1024$ & 6.3493 & 14.0341 & 20.5300 & 25.2712 & 22.5889 & 9.3361 &
+        2.4415 \\
+        \hline
+    \end{tabular}
+\end{table}
+
+\begin{table}[H]
+    \renewcommand{\arraystretch}{1.3}
+    \caption{Average running time of \texttt{crunBMLGrid2()}.}
+    \label{tab:time_crunBMLGrid2}
+    \centering
+    \begin{tabular}{c|ccccccc}
+        \hline
+          $l$ & $\rho = 0.1$ & $\rho = 0.2$& $\rho = 0.3$ &$\rho = 0.4$ & $\rho
+          = 0.5$ & $\rho = 0.6$ & $\rho = 0.7$ \\
+        \hline
+        $128$ & 0.5375 & 0.9632 & 1.3688 & 0.8878 & 0.1449 & 0.1075 & 0.0552 \\
+        $256$ & 1.8832 & 3.5817 & 5.6120 & 5.0610 & 0.9962 & 0.7396 & 0.2674 \\
+        $512$ & 6.5171 & 12.5623 & 18.6154 & 13.0864 & 6.6969 & 3.9744 &
+        1.1615\\
+        $1024$ & 28.5689 & 59.0848 & 82.8642 & 63.2015 & 55.4016 & 24.2087 &
+        6.1441\\
+        \hline
+    \end{tabular}
+\end{table}
+
+\pagebreak
+\section*{Appendix B: Source Files}
+\subsection*{\texttt{BMLGrid.R}}
+\lstinputlisting[language=R]{../BMLGrid/R/BMLGrid.R}
+\subsection*{\texttt{BMLGrid.h}}
+\lstinputlisting[language=C++]{../BMLGrid/src/BMLGrid.h}
+\subsection*{\texttt{BMLGrid.cpp}}
+\lstinputlisting[language=C++]{../BMLGrid/src/BMLGrid.cpp}
+
 
 %----------------------------------------------------------------------------------------
 

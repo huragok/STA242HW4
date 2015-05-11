@@ -42,7 +42,7 @@ for (i_len_edge in seq_along(len_edge_range)) {
   lines(rho_range, user_time_c2[((i_len_edge-1) * length(rho_range) + 1) : (i_len_edge * length(rho_range))], type="o",  col=col_range[i_len_edge], lwd=2.5, lty = 3, pch = 3, cex=1)
 }
 l = c(paste(rep_len('R, l =', length(len_edge_range)), len_edge_range), paste(rep_len('C++v1, l =', length(len_edge_range)), len_edge_range), paste(rep_len('C++v2, l =', length(len_edge_range)), len_edge_range))
-legend(0.55, 140, legend = l, lty=c(rep_len(1, length(len_edge_range)), rep_len(2, length(len_edge_range)), rep_len(3, length(len_edge_range))), lwd=rep_len(2.5, 3 * length(len_edge_range)), col= c(col_range, col_range, col_range))
+legend(0.55, 150, legend = l, lty=c(rep_len(1, length(len_edge_range)), rep_len(2, length(len_edge_range)), rep_len(3, length(len_edge_range))), lwd=rep_len(2.5, 3 * length(len_edge_range)), col= c(col_range, col_range, col_range))
 dev.off()
 
 speedup1 <- user_time / user_time_c1

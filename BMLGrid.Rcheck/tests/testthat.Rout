@@ -21,14 +21,13 @@ Type 'q()' to quit R.
 > test_check("BMLGrid")
 Create a BMLGrid object : ........
 Run BMLGrid simulation : ............
-Run BMLGrid simulation in c++ : ....Grid lock detected at step 1713
-Grid lock detected at step 1945
-Grid lock detected at step 894
-Grid lock detected at step 281
-Grid lock detected at step 634
-Grid lock detected at step 608
-Grid lock detected at step 658
-Grid lock detected at step 694
+Run BMLGrid simulation in c++ : ....Grid lock detected at step 1185
+Grid lock detected at step 3097
+Grid lock detected at step 770
+Grid lock detected at step 562
+Grid lock detected at step 617
+Grid lock detected at step 593
+Grid lock detected at step 364
 Grid lock detected at step 2
 Grid lock detected at step 2
 Grid lock detected at step 2
@@ -37,8 +36,8 @@ Grid lock detected at step 2
 ......
 Run BMLGrid simulation where key routines are rewritten in C++ : ..................
 
-There were 45 warnings (use warnings() to see them)
+There were 38 warnings (use warnings() to see them)
 > 
 > proc.time()
    user  system elapsed 
- 79.317   0.441  79.340 
+ 90.800   0.509  90.876 
