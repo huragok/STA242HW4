@@ -1,9 +1,8 @@
 library(BMLGrid)
 
-len_edge_range <- c(128, 256) # Edge length of the grid
+len_edge_range <- c(128, 256, 512, 1024) # Edge length of the grid
 rho_range <- seq(0.1, 0.7, by=0.1) # different rho
-#col_range <- c('blue', 'red', 'black', 'darkgreen')
-col_range <- c('blue', 'red')
+col_range <- c('blue', 'red', 'black', 'darkgreen')
 numSteps <- 10000
 nrep <- 10
 p_red <- 0.5
