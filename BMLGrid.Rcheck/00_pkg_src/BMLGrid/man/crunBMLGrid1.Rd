@@ -4,12 +4,14 @@
 \alias{crunBMLGrid1}
 \title{Simulator for Biham-Middleton-Levine Traffic Model written in c++.}
 \usage{
-crunBMLGrid1(g, numSteps)
+crunBMLGrid1(g, numSteps, warningGridLock = FALSE)
 }
 \arguments{
 \item{g}{A BMLGrid class object representing the initial state of the grid.}
 
 \item{numSteps}{Number of moves/periods.}
+
+\item{warningGridLock}{bool value indicating whether to prompt to Rcout when grid lock is detected. Default value is false.}
 }
 \description{
 The function that actually runs the Biham-Middleton-Levine Traffic Model from an initial state by a given number of steps.

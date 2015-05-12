@@ -90,8 +90,8 @@ intermediate vector variables. Since our original 2 routines,
 \texttt{idx\_right()} and \texttt{idx\_up()}, both contains a few vectorized
 mathematic operations, we expect to achieve some performance gain with
 \texttt{crunBMLGrid2()}. Another main advantage of C++ over R is that it allows
-more efficient memory management: in our original \texttt{runBMLGrid()} when
-ever the grid \texttt{g} or the cars' locations \texttt{red} and \texttt{blue}
+more efficient memory management~\cite{xian2014efficient}: in our original
+\texttt{runBMLGrid()} when ever the grid \texttt{g} or the cars' locations \texttt{red} and \texttt{blue}
 is updated, R creates a new object instead of modifying in-place (as verified
 with function \texttt{address()} from package 'pryr'). This might
 results in a lot of redundant memory management operations under the hood. In
@@ -121,34 +121,53 @@ outer for-loop due to grid lock when $\rho$ is large, the number of steps execut
 before breaking are the same for all 3 routines.
 
 \section{Running Time Comparison with R's Vectorized Operation}
-To compare the performance of \texttt{crunBMLGrid()} and \texttt{runBMLGrid()},
-we measure the running time of both functions for $r=c=128,256,512,1024$ and
+To compare the performance of \texttt{crunBMLGrid1()} and
+\texttt{crunBMLGrid2()} with \texttt{runBMLGrid()}, we measure the running time
+of all the three functions for $r=c=128,256,512,1024$ and
 $\rho=0.1,0.2,9.3,0.4,0.5,0.6,0.7$. For each of the $4\times7=28$ settings we
-randomly generate 10 initial grids and apply \texttt{crunBMLGrid1()},
-\texttt{crunBMLGrid2()} and \texttt{runBMLGrid()} on them and record the average
-running time. We also fix the number of steps to $N=10000$ and have the same
-number of red and blue cars in the grid. Again we run this test on a Dell
-Precision T1700 workstation equipped with 16GB DDR3 RAM and a Core i7-4790K CPU
-in Ubuntu 14.04 OS. The average running time in seconds and the relative speed up from
-\texttt{runBMLGrid()} to \texttt{crunBMLGrid1()} and \texttt{crunBMLGrid2()} are
-plotted in Fig.~\ref{fig:running_time} and Fig.~\ref{fig:speed_up}, repectively.
-The original data of Fig.~\ref{fig:running_time} is also provided in the
-Appendix A. The main results are summarized as follows:
+randomly generate 20 initial grids and apply \texttt{crunBMLGrid1()},
+\texttt{crunBMLGrid2()} and \texttt{runBMLGrid()} on them and record the running
+time. We also fix the number of steps to $N=10000$ and have the same number of
+red and blue cars in the grid. Again we run this test on a Dell Precision T1700
+workstation equipped with 16GB DDR3 RAM and a Core i7-4790K CPU in Ubuntu 14.04
+OS. The average and error bar of the running time in seconds and the relative
+speed up of the average running time from \texttt{runBMLGrid()} to
+\texttt{crunBMLGrid1()} and \texttt{crunBMLGrid2()} are plotted in
+Fig.~\ref{fig:running_time} and Fig.~\ref{fig:speed_up}, repectively.
+We have also plotted the running time for different number of steps of $N$ for
+$\rho=0.3, 0.4, 0.5$ and $r=c=256$ in Fig.~\ref{fig:running_time_vs_numsteps}.
+The main results are summarized as follows:
 \begin{itemize}
     \item For \texttt{crunBMLGrid2()} where only the key routines are rewritten
     in C++, there is a limited speed up of less than 2x, and this speed up
-    remains relatively constant for different $\rho$ and $l$.
+    remains relatively constant for different $\rho$, $l$ and $N$.
     \item For \texttt{crunBMLGrid1()} which is entirely rewritten in C++, there
-    is a significant speed up from 4x to 9x. In general, the larger the edge
+    is a significant speed up from 3x to 9x. In general, the larger the edge
     length, the smaller the speed up is. The speed up for cases where there is
     no grid lock detected is significantly higher than the cases where there is
     grid lock and early breaks. Surprisingly, the peak of running time for both
     \texttt{runBMLGrid()} and \texttt{crunBMLGrid2()} appears at $\rho = 0.3$,
     yet that for \texttt{crunBMLGrid1()} appears at $\rho = 0.4$ (In our
     running time test we have also verified that all 3 functions returned the
-    same results). The above two observations probably indicate that early break
-    from the outer for-loop in \texttt{crunBMLGrid1()} comes with a significant
-    price.
+    same results). In Fig.~\ref{fig:running_time_vs_numsteps} we further
+    verified that when $\rho = 0.4$, $N=1000$, even though for all the 20
+    initial grids the early break has not been detected, the relative speed up
+    ($\sim4$x) has already been much lower than that when $\rho = 0.3$. This
+    indicates that the sharp drop of speed up in Fig.~\ref{fig:speed_up} has
+    nothing to do with the grid-detection mechanism in our algorithm. Our best
+    guess is that it has something to do with R's or Rcpp's memory management
+    schemes.
+    \item From Fig.~\ref{fig:running_time}
+    and Fig.~\ref{fig:running_time_vs_numsteps}, we notice that when the BML
+    model is in ordered state ($\rho < 0.4$), the variances of the running time
+    of all 3 routines are very small among different initial states. When the
+    BML model is in the critical state ($\rho \approx 0.4$), the variances of
+    the running time are very large since different initial states of the grid
+    may lead to significantly different early break time (if there is grid lock
+    detected). When the BML model is in the stale state ($\rho > 0.4$), as
+    $\rho$ grows, the variances of running time begin to decrease since most
+    initaial grid states causes the grid to enter the grid lock mode after only
+    a few steps.
 \end{itemize}
 
 
@@ -170,6 +189,12 @@ Based on the above results, our conclusion is
     this is not a compuation-intensive routine.
 \end{itemize}
 
+%   BIBLIOGRAPHY
+%----------------------------------------------------------------------------------------
+
+\bibliographystyle{unsrt}
+\bibliography{myrefs}
+
 \begin{figure}[H]
     \begin{minipage}[b]{0.5\linewidth}
       \centering
@@ -179,25 +204,25 @@ Based on the above results, our conclusion is
     \hfill
     \begin{minipage}[b]{0.5\linewidth}
       \centering
-      \centerline{\includegraphics[width=6.0cm]{./figs/TestBehavior_100_99_10000_033_end}}
+      \centerline{\includegraphics[width=6.0cm]{./figs/TestBehavior_100_99_10000_033_end.pdf}}
       \centerline{(b) $\rho = 0.33$}\medskip
     \end{minipage}
     \hfill
     \begin{minipage}[b]{0.5\linewidth}
       \centering
-      \centerline{\includegraphics[width=6.0cm]{./figs/TestBehavior_100_99_10000_038_end}}
+      \centerline{\includegraphics[width=6.0cm]{./figs/TestBehavior_100_99_10000_038_end.pdf}}
       \centerline{(c) $\rho = 0.38$}\medskip
     \end{minipage}
     \hfill
     \begin{minipage}[b]{0.5\linewidth}
       \centering
-      \centerline{\includegraphics[width=6.0cm]{./figs/TestBehavior_100_99_10000_043_end}}
+      \centerline{\includegraphics[width=6.0cm]{./figs/TestBehavior_100_99_10000_043_end.pdf}}
       \centerline{(d) $\rho = 0.43$}\medskip
     \end{minipage}
     \hfill
     \begin{minipage}[b]{1\linewidth}
       \centering
-      \centerline{\includegraphics[width=6.0cm]{./figs/TestBehavior_100_99_10000_05_end}}
+      \centerline{\includegraphics[width=6.0cm]{./figs/TestBehavior_100_99_10000_05_end.pdf}}
       \centerline{(e) $\rho = 0.5$}\medskip
     \end{minipage}
     \caption{Final state of a $100\times99$ grid with equal number of blue and
@@ -206,94 +231,75 @@ Based on the above results, our conclusion is
 \end{figure}
 
 \begin{figure}[H]
-    \centering
-    \includegraphics[width=3.5in]{figs/TestRunningTime.pdf}
-    \caption{User time of \texttt{crunBMLGrid(g, 10000)} \texttt{runBMLGrid(g,
-    10000)} averaged over 10 repetitions for $\rho=0.1,0.2,9.3,0.4,0.5,0.6,0.7$
-    and $r=c=128,256,512,1024$.}
+    \begin{minipage}[b]{0.5\linewidth}
+      \centering
+      \centerline{\includegraphics[width=6.0cm]{./figs/TestRunningTime_128.pdf}}
+      \centerline{(a) $l = 128$}\medskip
+    \end{minipage}
+    \hfill
+    \begin{minipage}[b]{0.5\linewidth}
+      \centering
+      \centerline{\includegraphics[width=6.0cm]{./figs/TestRunningTime_256.pdf}}
+      \centerline{(b) $l = 256$}\medskip
+    \end{minipage}
+    \hfill
+    \begin{minipage}[b]{0.5\linewidth}
+      \centering
+      \centerline{\includegraphics[width=6.0cm]{./figs/TestRunningTime_512.pdf}}
+      \centerline{(c) $l=512$}\medskip
+    \end{minipage}
+    \hfill
+    \begin{minipage}[b]{0.5\linewidth}
+      \centering
+      \centerline{\includegraphics[width=6.0cm]{./figs/TestRunningTime_1024.pdf}}
+      \centerline{(d) $l=1024$}\medskip
+    \end{minipage}
+    \caption{User time comparison between \texttt{runBMLGrid(g, 10000)},
+    \texttt{crunBMLGrid1(g, 10000)} and \texttt{crunBMLGrid2(g, 10000)} over 20
+    random intial grids for $\rho = 0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7$ and $r =
+    c = 128, 256, 512, 1024$.}
     \label{fig:running_time}
 \end{figure}
 
 \begin{figure}[H]
     \centering
     \includegraphics[width=3.5in]{figs/SpeedUp.pdf}
-    \caption{Relative speed up by rewriting the R routine with C++.}
+    \caption{Speed up from \texttt{runBMLGrid(g, 10000)} to
+    \texttt{crunBMLGrid1(g, 10000)} and \texttt{crunBMLGrid2(g, 10000)} over 20
+    random intial grids for $\rho = 0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7$ and $r =
+    c = 128, 256, 512, 1024$.}
     \label{fig:speed_up}
 \end{figure}
 
+\begin{figure}[H]
+    \begin{minipage}[b]{0.5\linewidth}
+      \centering
+      \centerline{\includegraphics[width=6.0cm]{./figs/TestRunningTimeVsNumStep_03.pdf}}
+      \centerline{(a) $\rho = 0.3$}\medskip
+    \end{minipage}
+    \hfill
+    \begin{minipage}[b]{0.5\linewidth}
+      \centering
+      \centerline{\includegraphics[width=6.0cm]{./figs/TestRunningTimeVsNumStep_04.pdf}}
+      \centerline{(b) $\rho = 0.4$}\medskip
+    \end{minipage}
+    \hfill
+    \begin{minipage}[b]{1\linewidth}
+      \centering
+      \centerline{\includegraphics[width=6.0cm]{./figs/TestRunningTimeVsNumStep_05.pdf}}
+      \centerline{(c) $\rho = 0.5$}\medskip
+    \end{minipage}
+    \caption{User time comparison between \texttt{runBMLGrid(g, N)},
+    \texttt{crunBMLGrid1(g, N)} and \texttt{crunBMLGrid2(g, N)} over 20
+    random intial grids for $\rho = 0.3, 0.4, 0.5$ and $r =
+    c = 256$.}
+    \label{fig:running_time_vs_numsteps}
+\end{figure}
 %\pagebreak
-%   BIBLIOGRAPHY
-%----------------------------------------------------------------------------------------
 
-\bibliographystyle{unsrt}
-\bibliography{myrefs}
-
-\section*{Appendix A: Running Time Results}
-\label{sec:append_A}
-\begin{table}[H]
-    \renewcommand{\arraystretch}{1.3}
-    \caption{Average running time of \texttt{runBMLGrid()} for different edge
-    length ($l$) and car density ($\rho$). The number of red and blue cars are
-    equal and the average running time is measured with 10 random initial grids
-    for each case for $N=10000$ steps.}
-    \label{tab:time_runBMLGrid}
-    \centering
-    \begin{tabular}{c|ccccccc}
-        \hline
-          $l$ & $\rho = 0.1$ & $\rho = 0.2$& $\rho = 0.3$ &$\rho = 0.4$ & $\rho
-          = 0.5$ & $\rho = 0.6$ & $\rho = 0.7$ \\
-        \hline
-        $128$ & 0.7726 & 1.4485 & 2.1080 & 1.3458 & 0.2242 & 0.1729 & 0.0862 \\
-        $256$ & 2.8686 & 5.6584 & 8.8592 & 8.1394 & 1.6388 &  1.2199 & 0.4517 \\
-        $512$ & 11.5545 & 20.1091 & 30.7582 & 21.1879 & 11.2239 & 6.7548 &
-        2.0129\\
-        $1024$ & 44.0835 & 89.9521 & 125.3059 & 94.6253 & 86.7233 & 36.9050 & 
-        9.4589\\
-        \hline
-    \end{tabular}
-\end{table}
-
-\begin{table}[H]
-    \renewcommand{\arraystretch}{1.3}
-    \caption{Average running time of \texttt{crunBMLGrid1()}.}
-    \label{tab:time_crunBMLGrid1}
-    \centering
-    \begin{tabular}{c|ccccccc}
-        \hline
-          $l$ & $\rho = 0.1$ & $\rho = 0.2$& $\rho = 0.3$ &$\rho = 0.4$ & $\rho
-          = 0.5$ & $\rho = 0.6$ & $\rho = 0.7$ \\
-        \hline
-        $128$ & 0.0902 & 0.1781 & 0.2718 & 0.3095 & 0.0578 & 0.0425 & 0.0214 \\
-        $256$ & 0.3734 & 0.7179 & 1.1281 & 1.7220 & 0.3671 & 0.2658 & 0.0954 \\
-        $512$ & 1.5264 & 2.9042 & 4.4529 & 5.3124 & 2.8402 & 1.6575 & 0.4970 \\
-        $1024$ & 6.3493 & 14.0341 & 20.5300 & 25.2712 & 22.5889 & 9.3361 &
-        2.4415 \\
-        \hline
-    \end{tabular}
-\end{table}
-
-\begin{table}[H]
-    \renewcommand{\arraystretch}{1.3}
-    \caption{Average running time of \texttt{crunBMLGrid2()}.}
-    \label{tab:time_crunBMLGrid2}
-    \centering
-    \begin{tabular}{c|ccccccc}
-        \hline
-          $l$ & $\rho = 0.1$ & $\rho = 0.2$& $\rho = 0.3$ &$\rho = 0.4$ & $\rho
-          = 0.5$ & $\rho = 0.6$ & $\rho = 0.7$ \\
-        \hline
-        $128$ & 0.5375 & 0.9632 & 1.3688 & 0.8878 & 0.1449 & 0.1075 & 0.0552 \\
-        $256$ & 1.8832 & 3.5817 & 5.6120 & 5.0610 & 0.9962 & 0.7396 & 0.2674 \\
-        $512$ & 6.5171 & 12.5623 & 18.6154 & 13.0864 & 6.6969 & 3.9744 &
-        1.1615\\
-        $1024$ & 28.5689 & 59.0848 & 82.8642 & 63.2015 & 55.4016 & 24.2087 &
-        6.1441\\
-        \hline
-    \end{tabular}
-\end{table}
 
 \pagebreak
-\section*{Appendix B: Source Files}
+\section*{Appendix: Source Files}
 \subsection*{\texttt{BMLGrid.R}}
 \lstinputlisting[language=R]{../BMLGrid/R/BMLGrid.R}
 \subsection*{\texttt{BMLGrid.h}}

@@ -1,7 +1,7 @@
 #include "BMLGrid.h"
 using namespace Rcpp;
 
-IntegerMatrix crunBMLGrid1(IntegerMatrix gInput, int numSteps)
+IntegerMatrix crunBMLGrid1(IntegerMatrix gInput, int numSteps, bool warningGridLock)
 {
   IntegerMatrix g = clone(gInput); // Copy the input matrix so that it won't be affected by the undefined behavior of modifying inputs
   int r = g.nrow();
@@ -45,7 +45,9 @@ IntegerMatrix crunBMLGrid1(IntegerMatrix gInput, int numSteps)
     }
     if (!movable_last && !movable)
     {
-      Rcout << "Grid lock detected at step " << step + 1 << std::endl;
+      if (warningGridLock) {
+        Rcout << "Grid lock detected at step " << step + 1 << std::endl;
+      }
       break;
     }
     else

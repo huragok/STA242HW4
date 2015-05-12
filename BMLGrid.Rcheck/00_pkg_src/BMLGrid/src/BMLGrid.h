@@ -12,6 +12,7 @@ using namespace Rcpp;
 //' The function that actually runs the Biham-Middleton-Levine Traffic Model from an initial state by a given number of steps.
 //' @param g A BMLGrid class object representing the initial state of the grid.
 //' @param numSteps Number of moves/periods.
+//' @param warningGridLock bool value indicating whether to prompt to Rcout when grid lock is detected. Default value is false.
 //' @examples
 //' library(BMLGrid)
 //' g = createBMLGrid(r = 100, c = 99, ncars = c(red = 100, blue = 100))
@@ -19,7 +20,7 @@ using namespace Rcpp;
 //' plot(g.out)
 //' @export
 // [[Rcpp::export]]
-IntegerMatrix crunBMLGrid1(IntegerMatrix g, int numSteps);
+IntegerMatrix crunBMLGrid1(IntegerMatrix g, int numSteps, bool warningGridLock = false);
 
 // Function to locate in grid 'g' all cars of 'color', equivalent to which()
 IntegerVector locateColor(const IntegerVector& g, int color);

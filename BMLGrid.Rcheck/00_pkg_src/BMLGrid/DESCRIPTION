@@ -13,4 +13,4 @@ LinkingTo: Rcpp
 Imports: animation, Rcpp
 Suggests: testthat
 NeedsCompilation: yes
-Packaged: 2015-05-11 06:12:30 UTC; wenhaowu
+Packaged: 2015-05-11 18:01:20 UTC; wenhaowu

@@ -6,14 +6,15 @@
 using namespace Rcpp;
 
 // crunBMLGrid1
-IntegerMatrix crunBMLGrid1(IntegerMatrix g, int numSteps);
-RcppExport SEXP BMLGrid_crunBMLGrid1(SEXP gSEXP, SEXP numStepsSEXP) {
+IntegerMatrix crunBMLGrid1(IntegerMatrix g, int numSteps, bool warningGridLock);
+RcppExport SEXP BMLGrid_crunBMLGrid1(SEXP gSEXP, SEXP numStepsSEXP, SEXP warningGridLockSEXP) {
 BEGIN_RCPP
     Rcpp::RObject __result;
     Rcpp::RNGScope __rngScope;
     Rcpp::traits::input_parameter< IntegerMatrix >::type g(gSEXP);
     Rcpp::traits::input_parameter< int >::type numSteps(numStepsSEXP);
-    __result = Rcpp::wrap(crunBMLGrid1(g, numSteps));
+    Rcpp::traits::input_parameter< bool >::type warningGridLock(warningGridLockSEXP);
+    __result = Rcpp::wrap(crunBMLGrid1(g, numSteps, warningGridLock));
     return __result;
 END_RCPP
 }
